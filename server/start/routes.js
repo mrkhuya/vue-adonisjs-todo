@@ -17,5 +17,11 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+  return { greeting: 'Hi, Vue.Js & Adonis.Js Todolist' }
 })
+
+Route.group(() => {
+  Route.post('auth/register', 'UserController.register')
+  Route.post('auth/login', 'UserController.login')
+})
+  .prefix('api/v0')
