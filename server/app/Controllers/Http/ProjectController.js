@@ -21,6 +21,18 @@ class ProjectController {
     return project
   }
 
+  async destroy({request, response, auth, params}) {
+    const user = await auth.getUser()
+    const { id } = params
+    const project = await Project.find(id)
+    if(project.user_id !== user.id){
+      return response.status(403)
+    }
+    await project.delete()
+    return project
+  }
+
+
 }
 
 module.exports = ProjectController
