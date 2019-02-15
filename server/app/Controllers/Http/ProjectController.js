@@ -31,6 +31,18 @@ class ProjectController {
     return project
   }
 
+  async update({ auth, request, params }){
+    console.log('=> Update')
+    const user = await auth.getUser()
+    const { id } = params
+    const project = await Project.find(id)
+    console.log('userID: '+ user.id + ' - project.userID: ' + project.user_id)
+    AuthorizationService.verifyPermission(project, user) //check permission
+    project.merge(request.only('title'))
+    await project.save()
+    return project
+  }
+
 
 }
 
