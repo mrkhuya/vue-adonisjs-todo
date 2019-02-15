@@ -1,6 +1,7 @@
 'use strict'
 
 const Project = use('App/Models/Project')
+const AuthorizationService = use('App/Services/AuthorizationServices')
 
 class ProjectController {
 
@@ -25,9 +26,7 @@ class ProjectController {
     const user = await auth.getUser()
     const { id } = params
     const project = await Project.find(id)
-    if(project.user_id !== user.id){
-      return response.status(403)
-    }
+    AuthorizationService.verifyPermission(project, user) //check permission
     await project.delete()
     return project
   }
